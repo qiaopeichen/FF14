@@ -1,62 +1,55 @@
-package com.example.ff14;
+package com.example.ff14.webview;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
+
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.example.ff14.R;
 import com.example.ff14.utils.ADFilterTool;
 
-public class MainActivity extends AppCompatActivity {
+public class MyWebView extends FrameLayout {
+
+    private Context mContext;
 
     private WebView mWebView;
     private ProgressBar mProcessBar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStatusBarTransparent();
-        setContentView(R.layout.activity_main);
+    public MyWebView(Context context) {
+        this(context, null);
+    }
+
+    public MyWebView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public MyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, 0);
+    }
+
+    public MyWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        mContext = context;
         initView();
         initWebView();
         initData();
-        // test
-    }
-
-    /**
-     * 设置透明状态栏
-     */
-    private void setStatusBarTransparent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-            getWindow().setNavigationBarColor(Color.TRANSPARENT);// 虚拟按键背景色
-        } else {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().setNavigationBarColor(Color.TRANSPARENT);// 虚拟按键背景色
-        }
-
     }
 
     private void initView() {
-        mWebView = findViewById(R.id.webView);
-        mProcessBar = findViewById(R.id.progressBar);
+        View rootView = LayoutInflater.from(mContext).inflate(R.layout.framelayout_webview, this);
+        mWebView = rootView.findViewById(R.id.webView);
+        mProcessBar = rootView.findViewById(R.id.progressBar);
     }
 
     private void initWebView() {
@@ -75,11 +68,9 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口，不明白什么意思
         webSettings.setLoadsImagesAutomatically(true);  //支持自动加载图片
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
-
     }
 
     private void initData() {
-        String url = "https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5";
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -110,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     WebView view, WebResourceRequest request) {
                 Uri requestUrl = request.getUrl();
                 String url = requestUrl.toString().toLowerCase();
-                if (!ADFilterTool.hasAd(MainActivity.this, url)) {
+                if (!ADFilterTool.hasAd(mContext, url)) {
                     return super.shouldInterceptRequest(view, request);//正常加载
                 } else {
                     //含有广告资源屏蔽请求
@@ -118,15 +109,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void loadUrl(String url) {
         mWebView.loadUrl(url);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mWebView != null && mWebView.canGoBack()) {
+    public boolean canGoBack() {
+        return mWebView != null && mWebView.canGoBack();
+    }
+
+    public void goBack() {
+        if (mWebView != null) {
             mWebView.goBack();
-            return;
         }
-        super.onBackPressed();
     }
 }
