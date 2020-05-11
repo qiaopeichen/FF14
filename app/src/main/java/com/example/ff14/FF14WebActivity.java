@@ -18,7 +18,7 @@ public class FF14WebActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStatusBarTransparent();
+//        setStatusBarTransparent();
         setContentView(R.layout.activity_ff14web);
         mWebView = findViewById(R.id.myWebView);
         String url = "https://ff14.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5";

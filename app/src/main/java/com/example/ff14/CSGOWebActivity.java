@@ -17,7 +17,7 @@ public class CSGOWebActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStatusBarTransparent();
+//        setStatusBarTransparent();
         setContentView(R.layout.activity_csgoweb);
         mWebView = findViewById(R.id.myWebView);
         String url = "https://www.csgola.com/player/76561198167314644";

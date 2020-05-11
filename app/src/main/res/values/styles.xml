@@ -20,8 +20,9 @@
     <!-- Base application theme. -->
     <style name="myTheme" parent="QMUI.Compat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/qmui_config_color_pure_black</item>
+        <item name="colorPrimaryDark">@color/qmui_config_color_pure_black</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@color/qmui_config_color_pure_black</item>
     </style>
 </resources>
