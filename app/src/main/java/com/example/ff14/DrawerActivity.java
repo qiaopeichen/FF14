@@ -86,11 +86,11 @@ public class DrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_ff14) {
             // Handle the camera action
             startActivity(new Intent(this, FF14WebActivity.class));
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.navi_csgo) {
+            startActivity(new Intent(this, CSGOWebActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_tools) {
